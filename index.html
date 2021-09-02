@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Demo</title>
+    <script src="./node_modules/qrcode/build/qrcode.js"></script>
+    <script>
+      setInterval(() => {
+        fetch('http://localhost:3000/generate/testEvent').then(response => {
+          response.json().then(data => {
+            var canvas = document.getElementById('canvas');
+            const {hash} = data;
+            const url = `http://localhost:3000/validate/${hash}`;
+            document.getElementById('link').setAttribute('href', url);
+            QRCode.toCanvas(canvas, url, function (error) {
+              if (error) console.error(error)
+              console.log('success!');
+            });
+          })
+        })
+      },1000);
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <a id="link" href="">Simulate scanning the qr-code</a>
+  </body>
+</html>
